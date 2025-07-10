@@ -1,81 +1,75 @@
-    // Clase Avion
-    class Avion {
-      constructor(nombre, capacidad, destino) {
-        this.nombre = nombre;
-        this.capacidad = capacidad;
-        this.destino = destino;
-        this.listaPasajeros = [];
-      }
+class Avion {
+  constructor(nombre, capacidad, destino) {
+    this.nombre = nombre;
+    this.capacidad = capacidad;
+    this.destino = destino;
+    this.listaPasajeros = [];
+  }
 
-      abordar(pasajero) {
-        if (this.listaPasajeros.length < this.capacidad) {
-          this.listaPasajeros.push(pasajero);
-          alert(`El pasajero ${pasajero} ha abordado el avión ${this.nombre}.`);
-        } else {
-          alert(`El avión ${this.nombre} está lleno. No se puede abordar.`);
-        }
-      }
+  abordar(pasajero) {
+    if (this.listaPasajeros.length < this.capacidad) {
+      this.listaPasajeros.push(pasajero);
+      document.writeln(`${pasajero} ha abordado el avión ${this.nombre}<br>`);
+    } else {
+      document.writeln(`El avión ${this.nombre} está lleno. No se puede abordar.<br>`);
+    }
+  }
+}
 
-      info() {
-        return `Avión: ${this.nombre}, Destino: ${this.destino}, Capacidad: ${this.capacidad}, Pasajeros a bordo: ${this.listaPasajeros.length}`;
+class Aeropuerto {
+  constructor(nombreAeropuerto) {
+    this.nombreAeropuerto = nombreAeropuerto;
+    this.listaAviones = [];
+  }
+
+  agregarAvion(avion) {
+    this.listaAviones.push(avion);
+  }
+
+  buscarAvion(nombre) {
+    for (let avion of this.listaAviones) {
+      if (avion.nombre === nombre) {
+        document.writeln(`Avión encontrado: ${avion.nombre}, destino: ${avion.destino}<br>`);
+        return avion;
       }
     }
+    document.writeln(`No se encontró ningún avión con el nombre "${nombre}".<br>`);
+    return null;
+  }
+}
 
-    // Clase Aeropuerto
-    class Aeropuerto {
-      constructor(nombreAeropuerto) {
-        this.nombreAeropuerto = nombreAeropuerto;
-        this.listaAviones = [];
-      }
+// Crear aeropuerto
+const aeropuerto = new Aeropuerto("Aeropuerto Internacional");
 
-      agregarAvion(avion) {
-        this.listaAviones.push(avion);
-        document.writeln(`<p>Avión ${avion.nombre} agregado al aeropuerto.</p>`);
-      }
+// Crear 3 aviones con datos ingresados por el usuario
+const nombre1 = prompt("Ingrese el nombre del primer avión:");
+const capacidad1 = parseInt(prompt("Ingrese la capacidad (cantidad de pasajeros) del primer avión:"));
+const destino1 = prompt("Ingrese el destino del primer avión:");
+const avion1 = new Avion(nombre1, capacidad1, destino1);
 
-      buscarAvion(nombreAvion) {
-        const avionEncontrado = this.listaAviones.find(avion => avion.nombre === nombreAvion);
-        if (avionEncontrado) {
-          alert(`Avión encontrado: ${avionEncontrado.nombre}`);
-          document.writeln(`<p>${avionEncontrado.info()}</p>`);
-          return avionEncontrado;
-        } else {
-          alert(`No se encontró el avión "${nombreAvion}".`);
-          return null;
-        }
-      }
-    }
+const nombre2 = prompt("Ingrese el nombre del segundo avión:");
+const capacidad2 = parseInt(prompt("Ingrese la capacidad (cantidad de pasajeros) del segundo avión:"));
+const destino2 = prompt("Ingrese el destino del segundo avión:");
+const avion2 = new Avion(nombre2, capacidad2, destino2);
 
-    // Crear aeropuerto
-    const aeropuerto = new Aeropuerto("Aeropuerto Internacional");
+const nombre3 = prompt("Ingrese el nombre del tercer avión:");
+const capacidad3 = parseInt(prompt("Ingrese la capacidad (cantidad de pasajeros) del tercer avión:"));
+const destino3 = prompt("Ingrese el destino del tercer avión:");
+const avion3 = new Avion(nombre3, capacidad3, destino3);
 
-    // Crear 3 aviones
-    const avion1 = new Avion("Boeing 737", 2, "Madrid");
-    const avion2 = new Avion("Airbus A320", 3, "Nueva York");
-    const avion3 = new Avion("Embraer 190", 1, "Londres");
+// Agregar los aviones al aeropuerto
+aeropuerto.agregarAvion(avion1);
+aeropuerto.agregarAvion(avion2);
+aeropuerto.agregarAvion(avion3);
 
-    // Agregar aviones al aeropuerto
-    aeropuerto.agregarAvion(avion1);
-    aeropuerto.agregarAvion(avion2);
-    aeropuerto.agregarAvion(avion3);
+// Buscar un avión
+const nombreABuscar = prompt("Ingrese el nombre del avión que desea buscar:");
+const avionEncontrado = aeropuerto.buscarAvion(nombreABuscar);
 
-    // Pedir al usuario el nombre del avión que quiere buscar
-    const nombreBusqueda = prompt("¿Qué avión quieres buscar? (Ejemplo: Airbus A320)");
-
-    const avionBuscado = aeropuerto.buscarAvion(nombreBusqueda);
-
-    // Si se encontró, permitir abordar pasajeros
-    if (avionBuscado) {
-      let seguir = true;
-      while (seguir) {
-        const pasajero = prompt("Escribe el nombre del pasajero que desea abordar (o deja vacío para terminar):");
-        if (pasajero) {
-          avionBuscado.abordar(pasajero);
-          document.writeln(`<p>${pasajero} abordó el avión.</p>`);
-        } else {
-          seguir = false;
-        }
-      }
-
-      document.writeln(`<p>Abordaje finalizado. Pasajeros totales: ${avionBuscado.listaPasajeros.length}</p>`);
-    }
+// Abordar pasajeros si el avión existe
+if (avionEncontrado !== null) {
+  while (avionEncontrado.listaPasajeros.length < avionEncontrado.capacidad) {
+    const pasajero = prompt("Ingrese el nombre del pasajero que desea abordar:");
+    avionEncontrado.abordar(pasajero);
+  }
+}
